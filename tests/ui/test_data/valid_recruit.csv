@@ -1,0 +1,4 @@
+test_case,email,last_name,first_name,referent_source_index,service_interest_index,type_of_association_index,explaination,expected_text
+should successfully submit with standard email,test@mail.com,Test,Test,0,"0,1",0,This is test submit,Your inquiry has been submitted successfully!
+should successfully submit with email has international characters,üser@example.com,üser,Test,1,"1,2",1,This is test explaination with special character: !@#$$%^&&* ,Your inquiry has been submitted successfully!
+should successfully submit with email contain plus sign,a+b@mail.com,Test,Test,1,1,1,,Your inquiry has been submitted successfully!

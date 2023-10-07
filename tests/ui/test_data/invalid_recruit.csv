@@ -1,0 +1,6 @@
+test_case,email,last_name,first_name,referent_source_index,service_interest_index,type_of_association_index,explaination,expected_text
+should show error message if don't select referent source,test@mail.com,Test,Test,,"0,1",0,This is test submit,'infoSource' is required
+should show error message if don't select service of interest,test@mail.com,Test,Test,1,,0,This is test submit,servicesOfInterest' is required
+should show error message with invalid email format,test@mail.com@,Test,Test,1,1,1,This is test submit,"
+
+'email' is not a valid email"
