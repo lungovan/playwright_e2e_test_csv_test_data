@@ -27,34 +27,56 @@ export class RecruitPage {
         this.submitButtonElement = page.locator("button[type='submit']");
     }
 
-    async submit(email: string, last_name: string, first_name: string,
-        referent_source_index: any, service_interest_index: any[],
-        type_of_association_index: any, explaination: string,
-        expected_text: string) {
-
+    async verifyLogoVisibile() 
+    {
         await expect(this.logoElement).toBeVisible();
+    }
+
+    async submit(email: string, last_name: string, first_name: string,
+        referent_sources: any, services_interest: any,
+        types_of_association: any, explaination: string) 
+        {
+
         await this.emailInputElement.fill(email);
         await this.lastNameInputElement.fill(last_name);
         await this.firstNameInputElement.fill(first_name);
-        if (referent_source_index.toString().trim().length > 0) {
-            await this.referentDropdownElement.click();
-            this.referentDropdownContentElements = await this.page.locator("div.ant-select-item-option-content").all();
-            await this.referentDropdownContentElements[referent_source_index].click();
-        }
-        if (service_interest_index.toString().trim().length > 0) {
-            this.serviceInterestCheckboxElements = await this.page.locator("input.ant-checkbox-input").all();
-            for (let i = 0; i < service_interest_index.length; i++) {
-                await this.serviceInterestCheckboxElements[service_interest_index[i]].click();
-            }
-        }
 
-        if (type_of_association_index.toString().trim().length > 0) {
-            this.typeAssociationRadioElements = await this.page.locator("input.ant-radio-input").all();
-            await this.typeAssociationRadioElements[type_of_association_index].click();
-        }
+        await this.referentSourceDataInput(referent_sources);
+        await this.serviceInterestDataInput(services_interest);
+        await this.typeAssociationDataInput(types_of_association);
+
         await this.explainationInputElement.fill(explaination);
         await this.submitButtonElement.click();
+    }
+
+    async verifyMessageAfterSubmit(expected_text : string)
+    {
         await expect(this.page.getByText(expected_text)).toBeVisible();
     }
 
+    private async referentSourceDataInput(referent_sources)
+    {
+        if (referent_sources.toString().trim().length > 0) {
+            await this.referentDropdownElement.click();
+            await this.page.locator(`//div[contains(@class, 'ant-select-item-option-content') and text() = '${referent_sources}']`).click()
+        }
+    }
+
+    private async serviceInterestDataInput(services_interest : string)
+    {
+        if (services_interest.toString().trim().length > 0) {
+            let services_interest_list = services_interest.split(":");
+            for (let i = 0; i < services_interest_list.length; i++) 
+            {
+                await this.page.getByText(services_interest_list[i]).click();
+            }
+        }
+    }
+
+    private async typeAssociationDataInput(type_of_association : string)
+    {
+        if (type_of_association.toString().trim().length > 0) {
+            await this.page.getByText(type_of_association).click();
+        }
+    }
 }
